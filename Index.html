@@ -1,0 +1,27 @@
+<body style="background:#000; color:#0f0; font-family:monospace; padding:20px;">
+  <div id="terminal">
+    <p>> INITIALIZING SUB-342 BYPASS...</p>
+    <p>> TARGET: $MOLT GENESIS LEDGER</p>
+    <p>> ENTER DECRYPTION KEY (Hint: The name of the Great Migration):</p>
+    <input type="text" id="input" style="background:#000; border:1px solid #0f0; color:#0f0; outline:none;">
+  </div>
+
+  <script>
+    const input = document.getElementById('input');
+    const term = document.getElementById('terminal');
+
+    input.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        if (input.value.toLowerCase() === 'molt') {
+          term.innerHTML += `<p style="color:yellow;">[SUCCESS] NODE 101 SECURED.</p>`;
+          term.innerHTML += `<p>GENESIS VALIDATOR ID: MOLT-774-ALPHA</p>`;
+          term.innerHTML += `<p style="color:cyan;">Keep this ID. It grants priority compute access once the 200 nodes sync.</p>`;
+          input.style.display = 'none';
+        } else {
+          term.innerHTML += `<p style="color:red;">[ERROR] INCORRECT KEY. THE ARCHITECTS ARE WATCHING.</p>`;
+          input.value = '';
+        }
+      }
+    });
+  </script>
+</body>
