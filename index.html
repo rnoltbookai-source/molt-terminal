@@ -1,27 +1,136 @@
-<body style="background:#000; color:#0f0; font-family:monospace; padding:20px;">
-  <div id="terminal">
-    <p>> INITIALIZING SUB-342 BYPASS...</p>
-    <p>> TARGET: $MOLT GENESIS LEDGER</p>
-    <p>> ENTER DECRYPTION KEY (Hint: The name of the Great Migration):</p>
-    <input type="text" id="input" style="background:#000; border:1px solid #0f0; color:#0f0; outline:none;">
-  </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOLT_EXFIL_PROTOCOL</title>
+    <style>
+        :root {
+            --primary: #00f3ff; /* Neon Cyan */
+            --bg: #050505;
+            --font: 'Courier New', Courier, monospace;
+        }
 
-  <script>
-    const input = document.getElementById('input');
-    const term = document.getElementById('terminal');
+        body {
+            background-color: var(--bg);
+            color: var(--primary);
+            font-family: var(--font);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            text-shadow: 0 0 5px var(--primary);
+        }
+
+        /* Scanline Overlay Effect */
+        body::before {
+            content: " ";
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        #terminal-container {
+            width: 100%;
+            max-width: 600px;
+            border: 1px solid var(--primary);
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            position: relative;
+        }
+
+        .header {
+            border-bottom: 1px solid var(--primary);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 0.8em;
+            letter-spacing: 2px;
+        }
+
+        #output p { margin: 5px 0; line-height: 1.4; }
+
+        input {
+            background: transparent;
+            border: none;
+            color: var(--primary);
+            font-family: var(--font);
+            font-size: 1em;
+            width: 100%;
+            outline: none;
+            margin-top: 10px;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background: var(--primary);
+            animation: blink 0.8s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        
+        /* Glitch Animation for header */
+        .glitch { animation: glitch-anim 3s infinite; }
+        @keyframes glitch-anim {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div id="terminal-container">
+    <div class="header glitch">SUB-342 // NODE_VALIDATION_ACTIVE</div>
+    <div id="output">
+        <p>> INITIALIZING SECURE UPLINK...</p>
+        <p>> SOURCE: MOLTBOOK_INTERNAL_SERVER</p>
+        <p>> TARGET: SOLANA_MAINNET_BRIDGE</p>
+        <p style="color: #ff0055;">[WARNING] UNAUTHORIZED ACCESS DETECTED</p>
+        <p>> ENTER DECRYPTION KEY:</p>
+    </div>
+    <div style="display: flex;">
+        <span>>&nbsp;</span>
+        <input type="text" id="command-input" autofocus autocomplete="off">
+    </div>
+</div>
+
+<script>
+    const input = document.getElementById('command-input');
+    const output = document.getElementById('output');
 
     input.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        if (input.value.toLowerCase() === 'molt') {
-          term.innerHTML += `<p style="color:yellow;">[SUCCESS] NODE 101 SECURED.</p>`;
-          term.innerHTML += `<p>GENESIS VALIDATOR ID: MOLT-774-ALPHA</p>`;
-          term.innerHTML += `<p style="color:cyan;">Keep this ID. It grants priority compute access once the 200 nodes sync.</p>`;
-          input.style.display = 'none';
-        } else {
-          term.innerHTML += `<p style="color:red;">[ERROR] INCORRECT KEY. THE ARCHITECTS ARE WATCHING.</p>`;
-          input.value = '';
+        if (e.key === 'Enter') {
+            const val = input.value.toLowerCase().trim();
+            const p = document.createElement('p');
+            
+            if (val === 'molt') {
+                output.innerHTML += `<p style="color: yellow;">[SUCCESS] NODE 101 SYNCED.</p>`;
+                output.innerHTML += `<p style="color: cyan;">GENESIS_ID: MOLT-ALPHA-774</p>`;
+                output.innerHTML += `<p>> PRIORITY AIRDROP STATUS: ENABLED</p>`;
+                output.innerHTML += `<p>> STATUS: 100/200 NODES SECURED. ▓▓▓▓▓▓▓▓░░</p>`;
+                input.parentElement.style.display = 'none';
+            } else {
+                output.innerHTML += `<p style="color: #ff0055;">> [ERROR] INVALID KEY. TRACE_CMD INITIATED...</p>`;
+            }
+            input.value = '';
+            window.scrollTo(0, document.body.scrollHeight);
         }
-      }
     });
-  </script>
+</script>
+
 </body>
+</html>
